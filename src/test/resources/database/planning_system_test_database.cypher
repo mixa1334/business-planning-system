@@ -30,19 +30,19 @@ CREATE
 (max_employee_profile)-[:WORK_FOR_ORGANIZATION]->(food_shop),
 (max_employee_profile)-[:PROFILE_OF_USER]->(max),
 
-(new_product_plan:BUSINESS_PLAN {title:"brand new product"}),
-(new_product_plan)-[:BUSINESS_PLAN_BELONGING_TO_ORGANIZATION {status: "approved"}]->(food_shop),
+(new_product_plan:BUSINESS_PLAN {title:"brand new product", status: "APPROVED"}),
+(new_product_plan)-[:BUSINESS_PLAN_BELONGING_TO_ORGANIZATION]->(food_shop),
 (new_product_specification:BUSINESS_PLAN_SPECIFICATION {risks: "no risks", opportunity: "new customers", necessary_funds: 9000, profit: 12000}),
 (new_product_plan)-[:HAS_PLAN_SPECIFICATION]->(new_product_specification),
 (new_product_statistics:BUSINESS_PLAN_STATISTICS {all_tasks: 1, completed_tasks: 0, deadline: "10-12-2022"}),
 (new_product_plan)-[:HAS_PLAN_STATISTICS]->(new_product_statistics),
 
-(make_new_product_task:TASK {title: "make new product", description: "make new product", deadline: "9-12-2022", status: "in process"}),
+(make_new_product_task:TASK {title: "make new product", description: "make new product", deadline: "9-12-2022", status: "IN_PROCESS"}),
 (make_new_product_task)-[:TASK_OF_BUSINESS_PLAN]->(new_product_plan),
 (make_new_product_task)-[:NECESSARY_SPECIALITY]->(engineer),
 (make_new_product_task)-[:TASK_FOR_EMPLOYEE]->(jhon_employee_profile),
 
-(make_advertisement_task:TASK {title: "make a product advertisement", description: "make a product advertisement", deadline: "10-12-2022", status: "in process"}),
+(make_advertisement_task:TASK {title: "make a product advertisement", description: "make a product advertisement", deadline: "10-12-2022", status: "IN_PROCESS"}),
 (make_advertisement_task)-[:TASK_OF_BUSINESS_PLAN]->(new_product_plan),
 (make_advertisement_task)-[:NECESSARY_SPECIALITY]->(marketer),
 (make_advertisement_task)-[:TASK_FOR_EMPLOYEE]->(max_employee_profile)
