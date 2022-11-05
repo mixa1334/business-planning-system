@@ -49,9 +49,9 @@ CREATE
 
 
 //test business plan
-(new_product_specification:BUSINESS_PLAN_SPECIFICATION {risks: "no risks", opportunity: "new customers", necessary_funds: 9000, profit: 12000}),
+(new_product_specification:BUSINESS_PLAN_SPECIFICATION {risks: "no risks", opportunity: "new customers", necessary_funds: "9000.00", profit: "12000.00"}),
 
-(new_product_statistics:BUSINESS_PLAN_STATISTICS {all_tasks: 1, completed_tasks: 0, deadline: date("2022-12-12")}),
+(new_product_statistics:BUSINESS_PLAN_STATISTICS {all_tasks: 2, completed_tasks: 0, deadline: date("2022-12-12")}),
 
 (new_product_plan:BUSINESS_PLAN {title:"brand new product", status: "APPROVED"}),
 (new_product_plan)-[:HAS_PLAN_SPECIFICATION]->(new_product_specification),
@@ -61,7 +61,7 @@ CREATE
 
 
 //test org
-(food_shop:ORGANIZATION {name: "food shop", available_funds: 15000}),
+(food_shop:ORGANIZATION {name: "food shop", available_funds: "15000.00"}),
 
 (food_shop)-[:HAS_SPECIALITIES]->(engineer),
 (food_shop)-[:HAS_SPECIALITIES]->(marketer),
