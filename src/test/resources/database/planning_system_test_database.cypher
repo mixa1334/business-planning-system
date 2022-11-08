@@ -21,7 +21,7 @@ CREATE
 (alex_employee_profile:EMPLOYEE_PROFILE {role: "DIRECTOR"}),
 (alex_employee_profile)-[:HAS_SPECIALITY]->(engineer),
 
-(alex:USER {name: "Alex", surname: "Alex", age: 29, phone_number: "+375 (29) 111-11-11",login: "login", password: "password"}),
+(alex:USER {name: "Alex", surname: "Alex", age: 29, phone_number: "+375 (29) 111-11-11",login: "alex", password: "$2a$12$KRuK7UBl2/C4XaolNTQ8sO/W5CgwPdgh//S4YVYqYbUDOJuk8T5zO"}),
 (alex)-[:HAS_PROFILE_STATISTICS]->(alex_stats),
 (alex)-[:HAS_PROFILE]->(alex_employee_profile),
 
@@ -32,7 +32,7 @@ CREATE
 (jhon_employee_profile)-[:HAS_SPECIALITY]->(engineer),
 (jhon_employee_profile)-[:HAS_TASKS]->(make_new_product_task),
 
-(jhon:USER {name: "Jhon", surname: "Jhon", age: 26, phone_number: "+375 (29) 555-55-55",login: "login", password: "password"}),
+(jhon:USER {name: "Jhon", surname: "Jhon", age: 26, phone_number: "+375 (29) 555-55-55",login: "jhon", password: "$2a$12$pd0QISHzdzVzlDKQD7xYp.CDRkSz1lf.eAKUP0rJuQKKqGDBybmdG"}),
 (jhon)-[:HAS_PROFILE_STATISTICS]->(jhon_stats),
 (jhon)-[:HAS_PROFILE]->(jhon_employee_profile),
 
@@ -43,7 +43,7 @@ CREATE
 (max_employee_profile)-[:HAS_SPECIALITY]->(marketer),
 (max_employee_profile)-[:HAS_TASKS]->(make_advertisement_task),
 
-(max:USER {name: "Max", surname: "Max", age: 18, phone_number: "+375 (29) 777-77-77",login: "login", password: "password"}),
+(max:USER {name: "Max", surname: "Max", age: 18, phone_number: "+375 (29) 777-77-77",login: "max", password: "$2a$12$KWPu/kIxsfYOxyB0oDSGX.YprjUlpPdTzSTwsQMGsU2fs0Qj13oP6"}),
 (max)-[:HAS_PROFILE_STATISTICS]->(max_stats),
 (max)-[:HAS_PROFILE]->(max_employee_profile),
 
