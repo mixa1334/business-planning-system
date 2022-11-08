@@ -24,10 +24,26 @@ public class EmployeeProfile {
     @Property(name = "role")
     private EmployeeRole role;
 
-    public enum EmployeeRole{
-        EMPLOYEE,
-        ANALYST,
-        DIRECTOR
+    public enum EmployeeRole {
+        EMPLOYEE("EMPLOYEE", "EMPLOYEE"),
+        ANALYST("ANALYST", "EMPLOYEE", "ANALYST"),
+        DIRECTOR("DIRECTOR", "EMPLOYEE", "ANALYST", "DIRECTOR");
+
+        private final String permission;
+        private final Set<String> authorities;
+
+        EmployeeRole(String permission, String... authorities) {
+            this.permission = permission;
+            this.authorities = Set.of(authorities);
+        }
+
+        public final Set<String> getAuthorities() {
+            return authorities;
+        }
+
+        public final String getPermission() {
+            return permission;
+        }
     }
 
     public Long getId() {
