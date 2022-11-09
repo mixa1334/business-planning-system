@@ -1,4 +1,4 @@
-package org.economics.planningsystem.security;
+package org.economics.planningsystem.security.user;
 
 import org.economics.planningsystem.model.entity.employee.EmployeeProfile;
 import org.economics.planningsystem.model.entity.employee.User;
@@ -8,13 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class SecurityUserDetails implements UserDetails {
+public class BpsUserDetails implements UserDetails {
     private final Long profileId;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public SecurityUserDetails(Long profileId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public BpsUserDetails(Long profileId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.profileId = profileId;
         this.username = username;
         this.password = password;
@@ -67,7 +67,7 @@ public class SecurityUserDetails implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .toList();
 
-        return new SecurityUserDetails(
+        return new BpsUserDetails(
                 profile.getId(),
                 user.getLogin(),
                 user.getPassword(),

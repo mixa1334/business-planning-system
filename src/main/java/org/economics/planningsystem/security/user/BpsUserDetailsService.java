@@ -1,20 +1,16 @@
-package org.economics.planningsystem.security;
+package org.economics.planningsystem.security.user;
 
 import org.economics.planningsystem.model.entity.employee.User;
 import org.economics.planningsystem.model.repository.employee.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("userDetailsServiceServiceImpl")
-public class SecurityUserDetailsService implements UserDetailsService {
+public class BpsUserDetailsService implements UserDetailsService {
     private final UserRepository repository;
 
-    @Autowired
-    public SecurityUserDetailsService(UserRepository repository) {
+    public BpsUserDetailsService(UserRepository repository) {
         this.repository = repository;
     }
 
@@ -24,6 +20,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
         User user = repository
                 .findUserByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
-        return SecurityUserDetails.build(user);
+        return BpsUserDetails.build(user);
     }
 }

@@ -1,4 +1,4 @@
-package org.economics.planningsystem.security.organization;
+package org.economics.planningsystem.security.expression;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

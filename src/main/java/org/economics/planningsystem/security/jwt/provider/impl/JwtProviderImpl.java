@@ -1,8 +1,9 @@
-package org.economics.planningsystem.security.jwt;
+package org.economics.planningsystem.security.jwt.provider.impl;
 
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.economics.planningsystem.security.jwt.provider.JwtProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Component
-public class JwtProvider {
+public class JwtProviderImpl implements JwtProvider {
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.expiration}")
@@ -33,6 +34,7 @@ public class JwtProvider {
         jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
     }
 
+    @Override
     public String generateToken(Authentication authentication) {
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
         Date currentDate = Date.from(Instant.now());
@@ -48,6 +50,7 @@ public class JwtProvider {
                 .compact();
     }
 
+    @Override
     public String getUsernameFromToken(String token) {
         return jwtParser
                 .parseClaimsJws(token)

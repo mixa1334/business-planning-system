@@ -1,16 +1,13 @@
-package org.economics.planningsystem.security.jwt;
+package org.economics.planningsystem.security.jwt.filter;
 
-import org.economics.planningsystem.security.SecurityUserDetailsService;
+import org.economics.planningsystem.security.jwt.provider.JwtProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,16 +18,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 
-@Component("jwtFilter")
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+public class JwtFilter extends OncePerRequestFilter {
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     private final JwtProvider jwtProvider;
-    private final SecurityUserDetailsService userDetailsService;
-    @Value("${jwt.header}")
-    private String headerName;
+    private final UserDetailsService userDetailsService;
+    private final String headerName;
 
-    @Autowired
-    public JwtAuthenticationFilter(JwtProvider jwtProvider, @Qualifier("userDetailsServiceServiceImpl") SecurityUserDetailsService userDetailsService) {
+    public JwtFilter(String headerName, JwtProvider jwtProvider, UserDetailsService userDetailsService) {
+        this.headerName = headerName;
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
     }

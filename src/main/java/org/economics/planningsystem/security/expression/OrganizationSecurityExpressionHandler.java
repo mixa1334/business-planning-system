@@ -1,7 +1,7 @@
-package org.economics.planningsystem.security.organization;
+package org.economics.planningsystem.security.expression;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.economics.planningsystem.security.organization.service.impl.OrganizationSecurityServiceImpl;
+import org.economics.planningsystem.model.service.organization.OrganizationService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
@@ -15,7 +15,7 @@ public class OrganizationSecurityExpressionHandler extends DefaultMethodSecurity
 
     @Override
     protected MethodSecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication, MethodInvocation invocation) {
-        OrganizationSecurityServiceImpl service = applicationContext.getBean(OrganizationSecurityServiceImpl.class);
+        OrganizationService service = applicationContext.getBean(OrganizationService.class);
         OrganizationSecurityExpression guard = new OrganizationSecurityExpression(authentication, service);
         guard.setTrustResolver(trustResolver);
         guard.setPermissionEvaluator(getPermissionEvaluator());
