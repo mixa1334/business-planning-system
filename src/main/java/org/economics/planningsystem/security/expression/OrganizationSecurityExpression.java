@@ -7,7 +7,6 @@ import org.springframework.security.access.expression.method.MethodSecurityExpre
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 public class OrganizationSecurityExpression extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
     private final OrganizationService service;
@@ -21,10 +20,14 @@ public class OrganizationSecurityExpression extends SecurityExpressionRoot imple
         this.service = service;
     }
 
+    // TODO: 11/30/2022 refactor
     public boolean isInOrganization(Long organizationId) {
         Long profileId = ((BpsUserDetails) authentication.getPrincipal()).getProfileId();
-        Optional<Long> employeeOrganizationId = service.findOrganizationIdByProfileId(profileId);
-        return employeeOrganizationId.isPresent() && employeeOrganizationId.get().equals(organizationId);
+        if (profileId == null) {
+            return false;
+        }
+        Long employeeOrganizationId = service.findOrganizationIdByProfileId(profileId);
+        return employeeOrganizationId.equals(organizationId);
     }
 
     @Override

@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers(authenticationControllerPath).permitAll()
+                .antMatchers(authenticationControllerPath).permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling()
                 .accessDeniedHandler(bpsAccessDeniedHandler())

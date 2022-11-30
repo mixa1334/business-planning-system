@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class BasicOrganizationService implements OrganizationService {
@@ -19,7 +17,7 @@ public class BasicOrganizationService implements OrganizationService {
     }
 
     @Override
-    public Optional<Long> findOrganizationIdByProfileId(Long profileId) {
+    public Long findOrganizationIdByProfileId(Long profileId) {
         return repository.findOrganizationIdByProfileId(profileId);
     }
 }

@@ -1,7 +1,7 @@
 package org.economics.planningsystem.security.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.economics.planningsystem.dto.exception.ExceptionDto;
+import org.economics.planningsystem.dto.exception.ExceptionResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class ResponseExceptionWriter {
     public void writeInJson(HttpServletResponse response, Exception exception, Integer status) throws IOException, ServletException {
-        ExceptionDto exceptionDto = new ExceptionDto();
+        ExceptionResponse exceptionDto = new ExceptionResponse();
         exceptionDto.setMessage(exception.getMessage());
         exceptionDto.setCode(status);
 

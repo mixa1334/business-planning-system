@@ -7,17 +7,22 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class BpsUserDetails implements UserDetails {
-    private final Long profileId;
-    private final String username;
+    private final Long userId;
+    private final Long statisticsId;
+    private final String login;
     private final String password;
+    private final Long profileId;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public BpsUserDetails(Long profileId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.profileId = profileId;
-        this.username = username;
+    public BpsUserDetails(Long userId, Long statisticsId, String login, String password, Long profileId, Collection<? extends GrantedAuthority> authorities) {
+        this.userId = userId;
+        this.statisticsId = statisticsId;
+        this.login = login;
         this.password = password;
+        this.profileId = profileId;
         this.authorities = authorities;
     }
 
@@ -33,7 +38,7 @@ public class BpsUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return login;
     }
 
     @Override
@@ -60,18 +65,40 @@ public class BpsUserDetails implements UserDetails {
         return profileId;
     }
 
-    public static UserDetails build(User user) {
-        EmployeeProfile profile = user.getProfile();
-        Collection<? extends GrantedAuthority> authorities = profile.getRole().getAuthorities()
-                .stream()
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+    public Long getUserId() {
+        return userId;
+    }
 
-        return new BpsUserDetails(
-                profile.getId(),
-                user.getLogin(),
-                user.getPassword(),
-                authorities
-        );
+    public Long getStatisticsId() {
+        return statisticsId;
+    }
+
+    // TODO: 11/30/2022 refactor
+    public static UserDetails build(User user) {
+        Long statisticsId = user.getStatistics().getId();
+        EmployeeProfile profile = user.getProfile();
+        if (profile != null) {
+            Collection<? extends GrantedAuthority> authorities = profile.getRole().getAuthorities()
+                    .stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
+            return new BpsUserDetails(
+                    user.getId(),
+                    statisticsId,
+                    user.getLogin(),
+                    user.getPassword(),
+                    profile.getId(),
+                    authorities
+            );
+        } else {
+            return new BpsUserDetails(
+                    user.getId(),
+                    statisticsId,
+                    user.getLogin(),
+                    user.getPassword(),
+                    null,
+                    Set.of(new SimpleGrantedAuthority("USER"))
+            );
+        }
     }
 }
