@@ -1,6 +1,7 @@
-package org.economics.planningsystem.dto.auth;
+package org.economics.planningsystem.dto.auth.request;
 
-public class LoginRequestDto {
+//POST to /auth/login
+public class LoginRequest {
     private String login;
     private String password;
 

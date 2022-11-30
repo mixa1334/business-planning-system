@@ -1,6 +1,6 @@
 package org.economics.planningsystem.dto.exception;
 
-public class ExceptionDto {
+public class ExceptionResponse {
     private String message;
 
     private Integer code;
