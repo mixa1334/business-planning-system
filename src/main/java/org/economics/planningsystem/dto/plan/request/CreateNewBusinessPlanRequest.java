@@ -17,6 +17,4 @@ public class CreateNewBusinessPlanRequest {
     private BigDecimal profit;
 
     private String deadline;
-
-    private List<CreateNewTaskRequest> tasks;
 }

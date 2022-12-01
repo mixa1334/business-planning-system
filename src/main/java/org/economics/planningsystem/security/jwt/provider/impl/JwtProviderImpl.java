@@ -35,14 +35,13 @@ public class JwtProviderImpl implements JwtProvider {
     }
 
     @Override
-    public String generateToken(Authentication authentication) {
-        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+    public String generateToken(String login) {
         Date currentDate = Date.from(Instant.now());
         Instant expirationInstant = Instant.now().plus(expirationInMillisecond, ChronoUnit.MILLIS);
         Date expirationDate = Date.from(expirationInstant);
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(login)
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(currentDate)
                 .setExpiration(expirationDate)
@@ -51,7 +50,7 @@ public class JwtProviderImpl implements JwtProvider {
     }
 
     @Override
-    public String getUsernameFromToken(String token) {
+    public String getLoginFromToken(String token) {
         return jwtParser
                 .parseClaimsJws(token)
                 .getBody()

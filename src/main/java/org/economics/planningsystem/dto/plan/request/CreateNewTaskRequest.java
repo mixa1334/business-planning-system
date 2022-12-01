@@ -2,7 +2,7 @@ package org.economics.planningsystem.dto.plan.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-// POST to /organizations/{orgId}/business_plans/{planId}
+// POST to /organizations/{orgId}/business_plans
 public class CreateNewTaskRequest {
     private String title;
 

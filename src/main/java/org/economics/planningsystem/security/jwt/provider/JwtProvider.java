@@ -3,7 +3,7 @@ package org.economics.planningsystem.security.jwt.provider;
 import org.springframework.security.core.Authentication;
 
 public interface JwtProvider {
-    String generateToken(Authentication authentication);
+    String generateToken(String login);
 
-    String getUsernameFromToken(String token);
+    String getLoginFromToken(String token);
 }

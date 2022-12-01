@@ -1,5 +1,6 @@
 package org.economics.planningsystem.model.entity.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.economics.planningsystem.model.entity.organization.Speciality;
 import org.springframework.data.neo4j.core.schema.*;
 
@@ -24,6 +25,7 @@ public class Task {
     private String description;
 
     @Relationship(type = "NECESSARY_SPECIALITY", direction = OUTGOING)
+    @JsonIgnore
     private Speciality necessarySpeciality;
 
     @Property(name = "status")

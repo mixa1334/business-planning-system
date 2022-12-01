@@ -1,5 +1,6 @@
 package org.economics.planningsystem.model.entity.employee;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.economics.planningsystem.model.entity.organization.Speciality;
 import org.economics.planningsystem.model.entity.plan.Task;
 import org.springframework.data.neo4j.core.schema.*;
@@ -16,6 +17,7 @@ public class EmployeeProfile {
     private Long id;
 
     @Relationship(type = "HAS_TASKS", direction = OUTGOING)
+    @JsonIgnore
     private Set<Task> tasks;
 
     @Relationship(type = "HAS_SPECIALITY", direction = OUTGOING)
