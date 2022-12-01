@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 // TODO: 12/1/2022 path to auth controller
-                .antMatchers("/").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling()
                 .accessDeniedHandler(bpsAccessDeniedHandler())

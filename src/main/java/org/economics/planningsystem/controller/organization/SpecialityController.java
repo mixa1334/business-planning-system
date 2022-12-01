@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/organizations/{orgId}/specialities")
@@ -24,8 +26,10 @@ public class SpecialityController {
 
     @GetMapping
     public ResponseEntity<GetOrganizationSpecialitiesResponse> getAllSpecialitiesInOrganization(@PathVariable Long orgId) {
-        // TODO: 12/1/2022 get all org specialities
-        return null;
+        GetOrganizationSpecialitiesResponse response = new GetOrganizationSpecialitiesResponse();
+        List<Speciality> specialities = service.findSpecialitiesByOrganizationId(orgId);
+        response.setSpecialities(specialities);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{specialityId}")
