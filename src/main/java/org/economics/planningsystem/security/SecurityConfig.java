@@ -49,8 +49,8 @@ public class SecurityConfig {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(authenticationControllerPath).permitAll()
-                .antMatchers(authenticationControllerPath).permitAll()
+                // TODO: 12/1/2022 path to auth controller
+                .antMatchers("/").permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling()
                 .accessDeniedHandler(bpsAccessDeniedHandler())
