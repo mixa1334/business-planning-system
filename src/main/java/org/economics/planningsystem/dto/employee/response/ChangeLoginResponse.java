@@ -1,7 +1,7 @@
-package org.economics.planningsystem.dto.employee;
+package org.economics.planningsystem.dto.employee.response;
 
-// from PUT /users/{id}/password
-public class ChangePasswordResponse {
+// from PUT /users/{id}/login
+public class ChangeLoginResponse {
     private String token;
 
     public String getToken() {

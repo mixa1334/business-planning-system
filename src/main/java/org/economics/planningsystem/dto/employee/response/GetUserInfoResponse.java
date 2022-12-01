@@ -1,4 +1,4 @@
-package org.economics.planningsystem.dto.employee;
+package org.economics.planningsystem.dto.employee.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

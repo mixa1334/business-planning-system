@@ -1,7 +1,8 @@
-package org.economics.planningsystem.dto.plan;
+package org.economics.planningsystem.dto.plan.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+// POST to /organizations/{orgId}/business_plans/{planId}
 public class CreateNewTaskRequest {
     private String title;
 

@@ -1,4 +1,4 @@
-package org.economics.planningsystem.dto.plan;
+package org.economics.planningsystem.dto.plan.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.economics.planningsystem.model.entity.plan.BusinessPlan;

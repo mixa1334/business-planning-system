@@ -1,4 +1,4 @@
-package org.economics.planningsystem.dto.organization;
+package org.economics.planningsystem.dto.organization.response;
 
 import org.economics.planningsystem.model.entity.organization.Organization;
 

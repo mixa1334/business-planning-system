@@ -1,4 +1,4 @@
-package org.economics.planningsystem.dto.organization;
+package org.economics.planningsystem.dto.organization.request;
 
 // POST to /organizations/{orgId}/specialities
 public class CreateNewSpecialityRequest {
