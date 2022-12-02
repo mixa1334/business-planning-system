@@ -10,7 +10,6 @@ public class SignupRequest {
 
     private Integer age;
 
-    @JsonProperty("phone_number")
     private String phoneNumber;
 
     private String login;

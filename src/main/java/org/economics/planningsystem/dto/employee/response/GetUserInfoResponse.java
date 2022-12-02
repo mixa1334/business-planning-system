@@ -1,7 +1,5 @@
 package org.economics.planningsystem.dto.employee.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 // from GET /users/{id}
 public class GetUserInfoResponse {
     private String name;
@@ -10,16 +8,12 @@ public class GetUserInfoResponse {
 
     private Integer age;
 
-    @JsonProperty("phone_number")
     private String phoneNumber;
 
-    @JsonProperty("completed_tasks")
     private Long completedTasks;
 
-    @JsonProperty("completed_after_deadline")
     private Long competedAfterDeadLine;
 
-    @JsonProperty("completed_on_time")
     private Long completedOnTime;
 
     private Long efficiency;

@@ -1,7 +1,5 @@
 package org.economics.planningsystem.dto.employee.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 // PUT to /users/{id}
 public class ChangeUserInfoRequest {
     private String name;
@@ -10,7 +8,6 @@ public class ChangeUserInfoRequest {
 
     private Integer age;
 
-    @JsonProperty("phone_number")
     private String phoneNumber;
 
     public String getName() {

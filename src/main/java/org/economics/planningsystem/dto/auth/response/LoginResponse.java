@@ -1,25 +1,21 @@
 package org.economics.planningsystem.dto.auth.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 // from POST /auth/login and POST /auth/signup
 public class LoginResponse {
     private String token;
 
-    @JsonProperty("user_id")
+    private final String tokenType = "Bearer";
+
     private Long userId;
 
-    @JsonProperty("statistics_id")
     private Long statisticsId;
 
     private List<String> roles;
 
-    @JsonProperty("organization_id")
     private Long organizationId;
 
-    @JsonProperty("profile_id")
     private Long profileId;
 
     public String getToken() {

@@ -1,13 +1,10 @@
 package org.economics.planningsystem.dto.organization.response;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.economics.planningsystem.model.entity.employee.User;
 
 import java.util.List;
 
 // from GET /organizations/{id}/applications
 public class GetApplicationsForMembershipResponse {
-    @JsonProperty("application_for_membership")
     private List<User> applicationForMembership;
 
     public List<User> getApplicationForMembership() {

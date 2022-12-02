@@ -1,7 +1,5 @@
 package org.economics.planningsystem.dto.plan.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -9,7 +7,6 @@ import java.util.List;
 public class CreateNewBusinessPlanRequest {
     private String title;
 
-    @JsonProperty("necessary_funds")
     private BigDecimal necessaryFunds;
 
     private String opportunity;

@@ -1,7 +1,6 @@
 package org.economics.planningsystem.model.entity.employee;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.util.Objects;
@@ -24,7 +23,6 @@ public class User {
     private Integer age;
 
     @Property(name = "phone_number")
-    @JsonProperty("phone_number")
     private String phoneNumber;
 
     @Property(name = "login")

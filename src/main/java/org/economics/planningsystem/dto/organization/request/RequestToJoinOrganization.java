@@ -1,10 +1,7 @@
 package org.economics.planningsystem.dto.organization.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 // POST to /organizations/{orgId}/applications
 public class RequestToJoinOrganization {
-    @JsonProperty("user_id")
     private Integer userId;
 
     public Integer getUserId() {

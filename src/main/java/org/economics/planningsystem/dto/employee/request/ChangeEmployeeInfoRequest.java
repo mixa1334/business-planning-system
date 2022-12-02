@@ -1,10 +1,7 @@
 package org.economics.planningsystem.dto.employee.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 // PUT to /organizations/{orgId}/employees/{employeeId}
 public class ChangeEmployeeInfoRequest {
-    @JsonProperty("speciality_id")
     private Integer specialityId;
 
     private String role;
