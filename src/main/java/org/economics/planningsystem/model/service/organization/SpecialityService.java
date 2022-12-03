@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SpecialityService {
     List<Speciality> findSpecialitiesByOrganizationId(Long id);
+    void deleteSpecialitiesById(Long id);
 }

@@ -14,4 +14,5 @@ public interface SpecialityRepository extends Neo4jRepository<Speciality, Long> 
             RETURN speciality
             """)
     List<Speciality> findSpecialitiesByOrganizationId(@Param("id") Long id);
+    void deleteSpecialitiesById(Long id);
 }

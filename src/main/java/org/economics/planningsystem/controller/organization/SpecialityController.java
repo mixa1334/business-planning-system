@@ -2,6 +2,7 @@ package org.economics.planningsystem.controller.organization;
 
 import org.economics.planningsystem.dto.organization.request.CreateNewSpecialityRequest;
 import org.economics.planningsystem.dto.organization.response.GetOrganizationSpecialitiesResponse;
+import org.economics.planningsystem.model.entity.organization.Organization;
 import org.economics.planningsystem.model.entity.organization.Speciality;
 import org.economics.planningsystem.model.service.organization.SpecialityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,20 @@ public class SpecialityController {
 
     @DeleteMapping("/{specialityId}")
     public ResponseEntity<HttpStatus> deleteSpeciality(@PathVariable Long orgId, @PathVariable Long specialityId) {
+        service.deleteSpecialitiesById(specialityId);
+        return new ResponseEntity<>(HttpStatus.OK);
         // TODO: 12/1/2022 delete speciality by id
-        return null;
+
     }
 
     @PostMapping
     public ResponseEntity<HttpStatus> createNewSpecialityInOrganization(@PathVariable Long orgId, @RequestBody CreateNewSpecialityRequest createNewSpecialityRequest) {
+        List<Speciality> specialities = service.findSpecialitiesByOrganizationId(orgId);
+        Speciality speciality = new Speciality();
+        speciality.setDescription(createNewSpecialityRequest.getDescription());
+        speciality.setName(createNewSpecialityRequest.getName());
+        specialities.add(speciality);
+        return new ResponseEntity<>(HttpStatus.OK);
         // TODO: 12/1/2022 create new speciality in organization
-        return null;
     }
 }

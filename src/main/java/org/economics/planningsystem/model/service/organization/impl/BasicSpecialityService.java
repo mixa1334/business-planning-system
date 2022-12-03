@@ -23,4 +23,9 @@ public class BasicSpecialityService implements SpecialityService {
     public List<Speciality> findSpecialitiesByOrganizationId(Long id) {
         return repository.findSpecialitiesByOrganizationId(id);
     }
+
+    @Override
+    public void deleteSpecialitiesById(Long id) {
+        repository.deleteSpecialitiesById(id);
+    }
 }
