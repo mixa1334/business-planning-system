@@ -1,5 +1,8 @@
 package org.economics.planningsystem.dto.employee.response;
 
+import org.economics.planningsystem.model.entity.employee.EmployeeStatistics;
+import org.economics.planningsystem.model.entity.employee.User;
+
 // from GET /users/{id}
 public class GetUserInfoResponse {
     private String name;
@@ -17,6 +20,20 @@ public class GetUserInfoResponse {
     private Long completedOnTime;
 
     private Long efficiency;
+
+    public static GetUserInfoResponse build(User user) {
+        GetUserInfoResponse response = new GetUserInfoResponse();
+        response.setName(user.getName());
+        response.setSurname(user.getSurname());
+        response.setAge(user.getAge());
+        response.setPhoneNumber(user.getPhoneNumber());
+        EmployeeStatistics statistics = user.getStatistics();
+        response.setCompletedTasks(statistics.getCompletedTasks());
+        response.setCompetedAfterDeadLine(statistics.getCompletedAfterDeadline());
+        response.setCompletedOnTime(statistics.getCompletedOnTime());
+        response.setEfficiency(statistics.getEfficiency());
+        return response;
+    }
 
     public String getName() {
         return name;
