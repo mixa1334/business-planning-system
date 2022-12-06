@@ -1,6 +1,8 @@
 package org.economics.planningsystem.controller.plan;
 
 import org.economics.planningsystem.dto.plan.request.CreateNewTaskRequest;
+import org.economics.planningsystem.model.service.plan.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +12,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/organizations/{orgId}/business_plans/{planId}/tasks")
 public class TaskController {
 
+    private final TaskService taskService;
+
+    @Autowired
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
     @PutMapping("/{taskId}")
-    public ResponseEntity<HttpStatus> completeTask(@PathVariable Long orgId, @PathVariable Long planId, @PathVariable Long taskId) {
-        // TODO: 12/1/2022 change task status and change business plan statistics (completed tasks, completed on time, etc.)
-        return null;
+    public ResponseEntity<HttpStatus> completeTask(
+            @PathVariable Long orgId,
+            @PathVariable Long planId,
+            @PathVariable Long taskId
+    ) {
+        taskService.complete(orgId, planId, taskId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createNewTask(@PathVariable Long orgId, @PathVariable Long planId, @RequestBody CreateNewTaskRequest createNewTaskRequest) {
-        // TODO: 12/1/2022 create new task in business plan. Also assign this task to employee who has the required qualification (in request)
-        return null;
+    public ResponseEntity<HttpStatus> createNewTask(
+            @PathVariable Long orgId,
+            @PathVariable Long planId,
+            @RequestBody CreateNewTaskRequest request
+    ) {
+        taskService.create(orgId, planId, request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
