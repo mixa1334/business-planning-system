@@ -7,7 +7,6 @@ import org.economics.planningsystem.model.service.organization.SpecialityService
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,6 @@ public class SpecialityController {
     @Autowired
     public SpecialityController(SpecialityService service) {
         this.service = service;
-        // TODO: 12/1/2022
     }
 
     @GetMapping
@@ -34,13 +32,17 @@ public class SpecialityController {
 
     @DeleteMapping("/{specialityId}")
     public ResponseEntity<HttpStatus> deleteSpeciality(@PathVariable Long orgId, @PathVariable Long specialityId) {
-        // TODO: 12/1/2022 delete speciality by id
-        return null;
+        service.deleteSpecialityById(specialityId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createNewSpecialityInOrganization(@PathVariable Long orgId, @RequestBody CreateNewSpecialityRequest createNewSpecialityRequest) {
-        // TODO: 12/1/2022 create new speciality in organization
-        return null;
+    public ResponseEntity<HttpStatus> createNewSpecialityInOrganization(
+            @PathVariable Long orgId,
+            @RequestBody CreateNewSpecialityRequest createNewSpecialityRequest
+    ) {
+        Speciality newSpeciality = createNewSpecialityRequest.toSpeciality();
+        service.createNewSpeciality(orgId, newSpeciality);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

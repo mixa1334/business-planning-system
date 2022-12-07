@@ -52,8 +52,9 @@ public class BasicTaskService implements TaskService {
         BusinessPlanStatistics statistics = plan.getBusinessPlanStatistics();
         statistics.setCompletedTasks(statistics.getCompletedTasks() + 1);
 
-        if (statistics.getAllTasks().equals(statistics.getCompletedTasks()))
+        if (statistics.getAllTasks().equals(statistics.getCompletedTasks())) {
             plan.setStatus(BusinessPlan.BusinessPlanStatus.COMPLETED);
+        }
 
         businessPlanRepository.save(plan);
         taskRepository.save(task);
@@ -89,7 +90,8 @@ public class BasicTaskService implements TaskService {
         task.setDeadline(LocalDate.parse(request.getDeadline()));
         task.setTaskStatus(Task.TaskStatus.IN_PROCESS);
 
-        Speciality speciality = specialityRepository.findById(request.getNecessarySpecialityId().longValue()).orElseThrow();
+
+        Speciality speciality = specialityRepository.findById(request.getNecessarySpecialityId()).orElseThrow();
         task.setNecessarySpeciality(speciality);
 
         return task;
