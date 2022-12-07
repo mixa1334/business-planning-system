@@ -1,6 +1,8 @@
 package org.economics.planningsystem.model.service.organization.impl;
 
+import org.economics.planningsystem.model.entity.organization.Organization;
 import org.economics.planningsystem.model.entity.organization.Speciality;
+import org.economics.planningsystem.model.repository.organization.OrganizationRepository;
 import org.economics.planningsystem.model.repository.organization.SpecialityRepository;
 import org.economics.planningsystem.model.service.organization.SpecialityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,20 +14,39 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class BasicSpecialityService implements SpecialityService {
-    private final SpecialityRepository repository;
+    private final SpecialityRepository specialityRepository;
+    private final OrganizationRepository organizationRepository;
 
     @Autowired
-    public BasicSpecialityService(SpecialityRepository repository) {
-        this.repository = repository;
+    public BasicSpecialityService(SpecialityRepository repository, OrganizationRepository organizationRepository) {
+        this.specialityRepository = repository;
+        this.organizationRepository = organizationRepository;
     }
 
     @Override
     public List<Speciality> findSpecialitiesByOrganizationId(Long id) {
-        return repository.findSpecialitiesByOrganizationId(id);
+        return specialityRepository.findSpecialitiesByOrganizationId(id);
     }
 
     @Override
     public void deleteSpecialitiesById(Long id) {
-        repository.deleteSpecialitiesById(id);
+        specialityRepository.deleteSpecialitiesById(id);
     }
+
+    @Override
+    public void save(Speciality speciality) {
+        specialityRepository.save(speciality);
+    }
+
+    @Override
+    public void save(Organization organization) {
+        organizationRepository.save(organization);
+    }
+
+    @Override
+    public Organization findOrganizationById(Long id) {
+        return organizationRepository.findOrganizationById(id);
+    }
+
+
 }

@@ -8,17 +8,13 @@ import org.economics.planningsystem.dto.organization.response.GetOrganizationInf
 import org.economics.planningsystem.model.entity.employee.EmployeeProfile;
 import org.economics.planningsystem.model.entity.employee.User;
 import org.economics.planningsystem.model.entity.organization.Organization;
-import org.economics.planningsystem.model.service.organization.OrganizationService;
 import org.economics.planningsystem.model.service.organization.impl.BasicOrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -34,9 +30,19 @@ public class OrganizationController {
 
     @PostMapping
     public ResponseEntity<HttpStatus> createNewOrganization(@RequestBody CreateNewOrganizationRequest createNewOrganizationRequest) {
+        EmployeeProfile employeeProfile = new EmployeeProfile();
+        employeeProfile.setRole(EmployeeProfile.EmployeeRole.DIRECTOR);
+
+        User user = service.findUserById(createNewOrganizationRequest.getUserId());
+        user.setProfile(employeeProfile);
+
         Organization organization = new Organization();
         organization.setAvailableFunds(createNewOrganizationRequest.getFunds());
         organization.setName(createNewOrganizationRequest.getName());
+        organization.setEmployees(new HashSet<>(Collections.singletonList(user.getProfile())));
+
+        service.save(employeeProfile);
+        service.save(user);
         service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
         // TODO: 12/1/2022 create new org; assign director_role (also create EmployeeProfile for User by id)
@@ -58,20 +64,18 @@ public class OrganizationController {
         if (organization == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
         // TODO: 12/1/2022 update org info by id
     }
 
     @PostMapping("/{orgId}/applications")
     public ResponseEntity<HttpStatus> sendRequestToJoinOrganization(@PathVariable Long orgId, @RequestBody RequestToJoinOrganization request) {
-        return null;
-        //waiting for implementation
-
-        /*Organization organization = service.findOrganizationById(orgId);
-        EmployeeProfile employee = service.findById(request.getUserId());
-        organization.getEmployees().add(employee);
+        Organization organization = service.findOrganizationById(orgId);
+        User user = service.findUserById(Long.valueOf(request.getUserId()));
+        organization.getApplicationForMembership().add(user);
         service.save(organization);
-        return new ResponseEntity<>(HttpStatus.OK);*/
+        return new ResponseEntity<>(HttpStatus.OK);
         // TODO: 12/1/2022 add user to List<users> in organization (aka list of applications to join org)
     }
 
@@ -95,6 +99,7 @@ public class OrganizationController {
         userOptional.setProfile(new EmployeeProfile());
         organization.getEmployees().add(userOptional.getProfile());
 
+        service.save(userOptional);
         service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
         // TODO: 12/1/2022 remove employee from List<User> to List<Employees> in organization. Also create new Employee Profile for user
@@ -107,7 +112,7 @@ public class OrganizationController {
 
         User userOptional = organization.getApplicationForMembership().stream().filter(user -> user.getId().equals(userId)).findAny().get();
         organization.getApplicationForMembership().remove(userOptional);
-
+        service.save(userOptional);
         service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
         // TODO: 12/1/2022 remove employee from List<User> (aka Requests to join)
