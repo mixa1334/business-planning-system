@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface SpecialityService {
     List<Speciality> findSpecialitiesByOrganizationId(Long id);
+
+    void createNewSpeciality(Long orgId, Speciality speciality);
+
+    void deleteSpecialityById(Long id);
 }
