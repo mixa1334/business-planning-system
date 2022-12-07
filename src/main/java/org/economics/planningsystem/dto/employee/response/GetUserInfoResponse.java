@@ -15,7 +15,7 @@ public class GetUserInfoResponse {
 
     private Long completedTasks;
 
-    private Long competedAfterDeadLine;
+    private Long completedAfterDeadLine;
 
     private Long completedOnTime;
 
@@ -29,7 +29,7 @@ public class GetUserInfoResponse {
         response.setPhoneNumber(user.getPhoneNumber());
         EmployeeStatistics statistics = user.getStatistics();
         response.setCompletedTasks(statistics.getCompletedTasks());
-        response.setCompetedAfterDeadLine(statistics.getCompletedAfterDeadline());
+        response.setCompletedAfterDeadLine(statistics.getCompletedAfterDeadline());
         response.setCompletedOnTime(statistics.getCompletedOnTime());
         response.setEfficiency(statistics.getEfficiency());
         return response;
@@ -75,12 +75,12 @@ public class GetUserInfoResponse {
         this.completedTasks = completedTasks;
     }
 
-    public Long getCompetedAfterDeadLine() {
-        return competedAfterDeadLine;
+    public Long getCompletedAfterDeadLine() {
+        return completedAfterDeadLine;
     }
 
-    public void setCompetedAfterDeadLine(Long competedAfterDeadLine) {
-        this.competedAfterDeadLine = competedAfterDeadLine;
+    public void setCompletedAfterDeadLine(Long completedAfterDeadLine) {
+        this.completedAfterDeadLine = completedAfterDeadLine;
     }
 
     public Long getCompletedOnTime() {
