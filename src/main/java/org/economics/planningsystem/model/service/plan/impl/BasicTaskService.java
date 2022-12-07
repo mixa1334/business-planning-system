@@ -89,7 +89,7 @@ public class BasicTaskService implements TaskService {
         task.setDeadline(LocalDate.parse(request.getDeadline()));
         task.setTaskStatus(Task.TaskStatus.IN_PROCESS);
 
-        Speciality speciality = specialityRepository.findById((long) request.getNecessarySpecialityId()).orElseThrow();
+        Speciality speciality = specialityRepository.findById(request.getNecessarySpecialityId().longValue()).orElseThrow();
         task.setNecessarySpeciality(speciality);
 
         return task;
