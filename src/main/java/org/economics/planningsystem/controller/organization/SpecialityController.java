@@ -2,6 +2,7 @@ package org.economics.planningsystem.controller.organization;
 
 import org.economics.planningsystem.dto.organization.request.CreateNewSpecialityRequest;
 import org.economics.planningsystem.dto.organization.response.GetOrganizationSpecialitiesResponse;
+import org.economics.planningsystem.model.entity.organization.Organization;
 import org.economics.planningsystem.model.entity.organization.Speciality;
 import org.economics.planningsystem.model.service.organization.SpecialityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/organizations/{orgId}/specialities")

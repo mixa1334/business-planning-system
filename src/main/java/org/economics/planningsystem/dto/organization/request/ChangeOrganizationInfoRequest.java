@@ -1,5 +1,7 @@
 package org.economics.planningsystem.dto.organization.request;
 
+import org.economics.planningsystem.model.entity.organization.Organization;
+
 import java.math.BigDecimal;
 
 // PUT to /organizations/{orgId}
@@ -22,5 +24,12 @@ public class ChangeOrganizationInfoRequest {
 
     public void setNewFunds(BigDecimal newFunds) {
         this.newFunds = newFunds;
+    }
+
+    public Organization getOrganization(){
+        Organization organization = new Organization();
+        organization.setName(newName);
+        organization.setAvailableFunds(newFunds);
+        return organization;
     }
 }
