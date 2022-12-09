@@ -39,26 +39,4 @@ public class BasicSpecialityService implements SpecialityService {
     public void deleteSpecialityById(Long id) {
         specialityRepository.deleteById(id);
     }
-
-    @Override
-    public void deleteSpecialitiesById(Long id) {
-        specialityRepository.deleteSpecialitiesById(id);
-    }
-
-    @Override
-    public void save(Speciality speciality) {
-        specialityRepository.save(speciality);
-    }
-
-    @Override
-    public void save(Organization organization) {
-        organizationRepository.save(organization);
-    }
-
-    @Override
-    public Organization findOrganizationById(Long id) {
-        return organizationRepository.findOrganizationById(id);
-    }
-
-
 }

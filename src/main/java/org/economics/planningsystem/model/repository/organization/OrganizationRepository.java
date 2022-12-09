@@ -14,7 +14,6 @@ public interface OrganizationRepository extends Neo4jRepository<Organization, Lo
             """)
     Long findOrganizationIdByProfileId(@Param("id") Long id);
     Organization findOrganizationById(Long id);
-    //void deleteOrganizationById();
     @Query("""
             MATCH (organization:ORGANIZATION) -[:HAS_EMPLOYEES]-> (employee_profile:EMPLOYEE_PROFILE)
             WHERE ID(organization) = $id

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class BasicOrganizationService implements OrganizationService {
@@ -24,6 +26,11 @@ public class BasicOrganizationService implements OrganizationService {
         this.organizationRepository = repository;
         this.userRepository = userRepository;
         this.employeeRepository = employeeRepository;
+    }
+
+    @Override
+    public List<Organization> getAll() {
+        return organizationRepository.findAll();
     }
 
     @Override
@@ -70,7 +77,7 @@ public class BasicOrganizationService implements OrganizationService {
 
     @Override
     public User findUserById(Long id) {
-        return userRepository.findUserById(id);
+        return userRepository.findUserById(id).orElseThrow();
     }
 
 

@@ -73,7 +73,6 @@ public class BpsUserDetails implements UserDetails {
         return statisticsId;
     }
 
-    // TODO: 11/30/2022 refactor
     public static UserDetails build(User user) {
         Long statisticsId = user.getStatistics().getId();
         EmployeeProfile profile = user.getProfile();

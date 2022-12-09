@@ -59,6 +59,12 @@ CREATE
 (new_product_plan)-[:HAS_TASKS]->(make_new_product_task),
 (new_product_plan)-[:HAS_TASKS]->(make_advertisement_task),
 
+// test applications to membership
+//1
+(ivan_stats:EMPLOYEE_STATISTICS {completed_tasks: 3, completed_on_time: 2, completed_after_deadline: 1, efficiency: 66}),
+
+(ivan:USER {name: "Ivan", surname: "Ivan", age: 29, phone_number: "+375 (29) 111-11-11",login: "ivan", password: "$2a$12$KRuK7UBl2/C4XaolNTQ8sO/W5CgwPdgh//S4YVYqYbUDOJuk8T5zO"}),
+(ivan)-[:HAS_PROFILE_STATISTICS]->(ivan_stats),
 
 //test org
 (food_shop:ORGANIZATION {name: "food shop", available_funds: "15000.00"}),
@@ -69,6 +75,8 @@ CREATE
 (food_shop)-[:HAS_EMPLOYEES]->(alex_employee_profile),
 (food_shop)-[:HAS_EMPLOYEES]->(jhon_employee_profile),
 (food_shop)-[:HAS_EMPLOYEES]->(max_employee_profile),
+
+(ivan)-[:SENT_REQUEST_TO_JOIN_ORGANIZATION]->(food_shop),
 
 (food_shop)-[:HAS_BUSINESS_PLANS]->(new_product_plan)
 ;

@@ -5,9 +5,12 @@ import org.economics.planningsystem.dto.organization.request.CreateNewOrganizati
 import org.economics.planningsystem.dto.organization.request.RequestToJoinOrganization;
 import org.economics.planningsystem.dto.organization.response.GetApplicationsForMembershipResponse;
 import org.economics.planningsystem.dto.organization.response.GetOrganizationInfoResponse;
+import org.economics.planningsystem.dto.organization.response.GetOrganizationsResponse;
 import org.economics.planningsystem.model.entity.employee.EmployeeProfile;
 import org.economics.planningsystem.model.entity.employee.User;
 import org.economics.planningsystem.model.entity.organization.Organization;
+import org.economics.planningsystem.model.entity.organization.Speciality;
+import org.economics.planningsystem.model.service.organization.SpecialityService;
 import org.economics.planningsystem.model.service.organization.impl.BasicOrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +25,19 @@ import java.util.*;
 public class OrganizationController {
 
     private final BasicOrganizationService service;
+    private final SpecialityService specialityService;
 
     @Autowired
-    public OrganizationController(BasicOrganizationService service){
+    public OrganizationController(BasicOrganizationService service, SpecialityService specialityService) {
         this.service = service;
+        this.specialityService = specialityService;
+    }
+
+    @GetMapping
+    public ResponseEntity<GetOrganizationsResponse> getAllOrganizations(){
+        GetOrganizationsResponse response = new GetOrganizationsResponse();
+        response.setOrganizations(service.getAll());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
@@ -40,13 +52,16 @@ public class OrganizationController {
         organization.setAvailableFunds(createNewOrganizationRequest.getFunds());
         organization.setName(createNewOrganizationRequest.getName());
         organization.setEmployees(new HashSet<>(Collections.singletonList(user.getProfile())));
+        Speciality speciality = new Speciality();
+        speciality.setName("worker");
+        speciality.setDescription("worker");
+        organization.setSpecialitiesOfOrganization(new HashSet<>(Collections.singletonList(speciality)));
+        employeeProfile.setSpeciality(speciality);
 
         service.save(employeeProfile);
         service.save(user);
         service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 create new org; assign director_role (also create EmployeeProfile for User by id)
-        //  of the one who created the organization (id included in request)
     }
 
     @GetMapping("/{id}")
@@ -55,18 +70,16 @@ public class OrganizationController {
         Organization organization = service.findOrganizationById(id);
         organizationInfoResponse.setOrganization(organization);
         return ResponseEntity.ok(organizationInfoResponse);
-        // TODO: 12/1/2022 get org info by id
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateOrganizationInfo(@PathVariable Long id, @RequestBody ChangeOrganizationInfoRequest changeOrganizationInfoRequest) {
         Organization organization = service.updateById(id, changeOrganizationInfoRequest);
-        if (organization == null){
+        if (organization == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 update org info by id
     }
 
     @PostMapping("/{orgId}/applications")
@@ -76,7 +89,6 @@ public class OrganizationController {
         organization.getApplicationForMembership().add(user);
         service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 add user to List<users> in organization (aka list of applications to join org)
     }
 
     @GetMapping("/{id}/applications")
@@ -86,7 +98,6 @@ public class OrganizationController {
         GetApplicationsForMembershipResponse applications = new GetApplicationsForMembershipResponse();
         applications.setApplicationForMembership(new ArrayList<>(users));
         return ResponseEntity.ok(applications);
-        // TODO: 12/1/2022 get all requests to join org by orgId
     }
 
     @PostMapping("/{orgId}/applications/{userId}/accept")
@@ -96,17 +107,18 @@ public class OrganizationController {
         User userOptional = organization.getApplicationForMembership().stream().filter(user -> user.getId().equals(userId)).findAny().get();
         organization.getApplicationForMembership().remove(userOptional);
 
-        userOptional.setProfile(new EmployeeProfile());
+        EmployeeProfile employeeProfile = new EmployeeProfile();
+        employeeProfile.setRole(EmployeeProfile.EmployeeRole.EMPLOYEE);
+        employeeProfile.setSpeciality(specialityService.findSpecialitiesByOrganizationId(orgId).get(0));
+        userOptional.setProfile(employeeProfile);
         organization.getEmployees().add(userOptional.getProfile());
 
         service.save(userOptional);
         service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 remove employee from List<User> to List<Employees> in organization. Also create new Employee Profile for user
-
     }
 
-    @PostMapping("/{orgId}/applications/{userId}/reject")
+    @PostMapping("/{orgId}/applications/{userId}/reject_user")
     public ResponseEntity<HttpStatus> rejectNewEmployee(@PathVariable Long orgId, @PathVariable Long userId) {
         Organization organization = service.findOrganizationById(orgId);
 
@@ -115,13 +127,11 @@ public class OrganizationController {
         service.save(userOptional);
         service.save(organization);
         return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 remove employee from List<User> (aka Requests to join)
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteOrganization(@PathVariable Long id) {
         service.deleteOrganizationById(id);
         return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 delete org by id; and delete all necessary info (like EmployeeProfiles, BusinessPlans, Tasks, etc.)
     }
 }

@@ -58,6 +58,7 @@ public class BasicTaskService implements TaskService {
 
         businessPlanRepository.save(plan);
         taskRepository.save(task);
+        taskRepository.deleteTaskFromEmployee(taskId);
     }
 
     @Override

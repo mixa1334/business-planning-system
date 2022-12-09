@@ -5,8 +5,12 @@ import org.economics.planningsystem.model.entity.employee.EmployeeProfile;
 import org.economics.planningsystem.model.entity.employee.User;
 import org.economics.planningsystem.model.entity.organization.Organization;
 
+import java.util.List;
+
 
 public interface OrganizationService {
+    List<Organization> getAll();
+
     Long findOrganizationIdByProfileId(Long profileId);
 
     Organization findOrganizationById(Long id);

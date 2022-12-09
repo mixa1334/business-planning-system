@@ -56,7 +56,6 @@ public class EmployeeController {
             @RequestBody ChangeEmployeeInfoRequest request) {
         employeeService.update(orgId, empId, request);
         return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 update employee info by id
     }
 
     @GetMapping("/{empId}/tasks")
