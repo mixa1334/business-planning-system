@@ -1,7 +1,10 @@
 package org.economics.planningsystem.dto.employee.request;
 
+import javax.validation.constraints.NotBlank;
+
 //PUT to /users/{id}/password
 public class ChangePasswordRequest {
+    @NotBlank
     private String newPassword;
 
     public String getNewPassword() {

@@ -12,4 +12,9 @@ public interface SpecialityService {
     void save(Organization organization);
 
     Organization findOrganizationById(Long id);
+
+
+    void createNewSpeciality(Long orgId, Speciality speciality);
+
+    void deleteSpecialityById(Long id);
 }

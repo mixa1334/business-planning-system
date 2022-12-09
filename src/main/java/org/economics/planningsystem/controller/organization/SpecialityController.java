@@ -21,7 +21,6 @@ public class SpecialityController {
     @Autowired
     public SpecialityController(SpecialityService service) {
         this.service = service;
-        // TODO: 12/1/2022
     }
 
     @GetMapping
@@ -34,24 +33,17 @@ public class SpecialityController {
 
     @DeleteMapping("/{specialityId}")
     public ResponseEntity<HttpStatus> deleteSpeciality(@PathVariable Long orgId, @PathVariable Long specialityId) {
-        service.deleteSpecialitiesById(specialityId);
-        return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 delete speciality by id
-
+        service.deleteSpecialityById(specialityId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createNewSpecialityInOrganization(@PathVariable Long orgId, @RequestBody CreateNewSpecialityRequest createNewSpecialityRequest) {
-        Organization organization = service.findOrganizationById(orgId);
-        List<Speciality> specialities = new java.util.ArrayList<>(organization.getSpecialitiesOfOrganization().stream().toList());
-        Speciality speciality = new Speciality();
-        speciality.setDescription(createNewSpecialityRequest.getDescription());
-        speciality.setName(createNewSpecialityRequest.getName());
-        specialities.add(speciality);
-        organization.setSpecialitiesOfOrganization(new HashSet<>(specialities));
-        service.save(speciality);
-        service.save(organization);
+    public ResponseEntity<HttpStatus> createNewSpecialityInOrganization(
+            @PathVariable Long orgId,
+            @RequestBody CreateNewSpecialityRequest createNewSpecialityRequest
+    ) {
+        Speciality newSpeciality = createNewSpecialityRequest.toSpeciality();
+        service.createNewSpeciality(orgId, newSpeciality);
         return new ResponseEntity<>(HttpStatus.OK);
-        // TODO: 12/1/2022 create new speciality in organization
     }
 }

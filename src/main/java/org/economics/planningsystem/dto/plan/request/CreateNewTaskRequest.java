@@ -8,7 +8,7 @@ public class CreateNewTaskRequest {
 
     private String deadline;
 
-    private Integer necessarySpecialityId;
+    private Long necessarySpecialityId;
 
     public String getTitle() {
         return title;
@@ -34,11 +34,11 @@ public class CreateNewTaskRequest {
         this.deadline = deadline;
     }
 
-    public Integer getNecessarySpecialityId() {
+    public Long getNecessarySpecialityId() {
         return necessarySpecialityId;
     }
 
-    public void setNecessarySpecialityId(Integer necessarySpecialityId) {
+    public void setNecessarySpecialityId(Long necessarySpecialityId) {
         this.necessarySpecialityId = necessarySpecialityId;
     }
 }

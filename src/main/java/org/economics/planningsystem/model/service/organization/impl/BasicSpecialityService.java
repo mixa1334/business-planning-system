@@ -29,6 +29,18 @@ public class BasicSpecialityService implements SpecialityService {
     }
 
     @Override
+    public void createNewSpeciality(Long orgId, Speciality speciality) {
+        Organization organization = organizationRepository.findById(orgId).orElseThrow();
+        organization.getSpecialitiesOfOrganization().add(speciality);
+        organizationRepository.save(organization);
+    }
+
+    @Override
+    public void deleteSpecialityById(Long id) {
+        specialityRepository.deleteById(id);
+    }
+
+    @Override
     public void deleteSpecialitiesById(Long id) {
         specialityRepository.deleteSpecialitiesById(id);
     }

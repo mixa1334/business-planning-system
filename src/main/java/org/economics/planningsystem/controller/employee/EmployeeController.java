@@ -4,41 +4,66 @@ import org.economics.planningsystem.dto.employee.request.ChangeEmployeeInfoReque
 import org.economics.planningsystem.dto.employee.response.GetEmployeeInfoResponse;
 import org.economics.planningsystem.dto.organization.response.GetOrganizationEmployeeInfoResponse;
 import org.economics.planningsystem.dto.plan.response.GetEmployeeTasksResponse;
+import org.economics.planningsystem.model.entity.employee.EmployeeProfile;
+import org.economics.planningsystem.model.entity.plan.Task;
+import org.economics.planningsystem.model.service.employee.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/organizations/{orgId}/employees")
 public class EmployeeController {
+
+    private final EmployeeService employeeService;
+
+    @Autowired
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
     @GetMapping
     public ResponseEntity<GetOrganizationEmployeeInfoResponse> getOrganizationEmployeeInfo(@PathVariable Long orgId) {
-        // TODO: 12/1/2022 get all org employees by orgId
-        return null;
+        GetOrganizationEmployeeInfoResponse response = new GetOrganizationEmployeeInfoResponse();
+        List<EmployeeProfile> employees = employeeService.findAll(orgId);
+        response.setEmployees(employees);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{empId}")
     public ResponseEntity<HttpStatus> leaveOrganization(@PathVariable Long orgId, @PathVariable Long empId) {
-        // TODO: 12/1/2022 delete EmployeeProfile, redistribute tasks (tasks which belongs to current empl) to other employees in organization
-        return null;
+        employeeService.delete(orgId, empId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{empId}")
     public ResponseEntity<GetEmployeeInfoResponse> getEmployeeInfo(@PathVariable Long orgId, @PathVariable Long empId) {
-        // TODO: 12/1/2022 get employee info by id
-        return null;
+        GetEmployeeInfoResponse response = new GetEmployeeInfoResponse();
+        EmployeeProfile employee = employeeService.findById(orgId, empId);
+        response.setSpeciality(employee.getSpeciality());
+        response.setRole(employee.getRole().name());
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{empId}")
-    public ResponseEntity<HttpStatus> updateEmployeeInfo(@PathVariable Long orgId, @PathVariable Long empId, @RequestBody ChangeEmployeeInfoRequest changeEmployeeInfoRequest) {
+    public ResponseEntity<HttpStatus> updateEmployeeInfo(
+            @PathVariable Long orgId,
+            @PathVariable Long empId,
+            @RequestBody ChangeEmployeeInfoRequest request) {
+        employeeService.update(orgId, empId, request);
+        return new ResponseEntity<>(HttpStatus.OK);
         // TODO: 12/1/2022 update employee info by id
-        return null;
     }
 
     @GetMapping("/{empId}/tasks")
     public ResponseEntity<GetEmployeeTasksResponse> getEmployeeTasks(@PathVariable Long orgId, @PathVariable Long empId) {
-        // TODO: 12/1/2022 return all tasks of employee
-        return null;
+        GetEmployeeTasksResponse response = new GetEmployeeTasksResponse();
+        List<Task> tasks = employeeService.getAllTasks(orgId, empId);
+        response.setTasks(tasks);
+        return ResponseEntity.ok(response);
     }
 }
