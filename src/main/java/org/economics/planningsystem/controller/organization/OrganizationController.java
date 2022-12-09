@@ -52,12 +52,14 @@ public class OrganizationController {
         Organization organization = new Organization();
         organization.setAvailableFunds(createNewOrganizationRequest.getFunds());
         organization.setName(createNewOrganizationRequest.getName());
+        service.save(organization);
         organization.setEmployees(new HashSet<>(Collections.singletonList(user.getProfile())));
         Speciality speciality = new Speciality();
         speciality.setName("worker");
         speciality.setDescription("worker");
         organization.setSpecialitiesOfOrganization(new HashSet<>(Collections.singletonList(speciality)));
         employeeProfile.setSpeciality(speciality);
+        employeeProfile.setOrganizationId(organization.getId());
 
         service.save(employeeProfile);
         service.save(user);
@@ -115,6 +117,7 @@ public class OrganizationController {
         EmployeeProfile employeeProfile = new EmployeeProfile();
         employeeProfile.setRole(EmployeeProfile.EmployeeRole.EMPLOYEE);
         employeeProfile.setSpeciality(specialityService.findSpecialitiesByOrganizationId(orgId).get(0));
+        employeeProfile.setOrganizationId(organization.getId());
         userOptional.setProfile(employeeProfile);
         organization.getEmployees().add(userOptional.getProfile());
 
