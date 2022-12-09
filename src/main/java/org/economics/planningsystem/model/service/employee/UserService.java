@@ -1,6 +1,5 @@
 package org.economics.planningsystem.model.service.employee;
 
-import org.economics.planningsystem.dto.auth.request.SignupRequest;
 import org.economics.planningsystem.dto.employee.request.ChangeLoginRequest;
 import org.economics.planningsystem.dto.employee.request.ChangePasswordRequest;
 import org.economics.planningsystem.dto.employee.request.ChangeUserInfoRequest;
@@ -15,6 +14,4 @@ public interface UserService {
     ChangeLoginResponse updateLogin(Long userId, ChangeLoginRequest request);
 
     void updatePassword(Long userId, ChangePasswordRequest request);
-
-    void create(SignupRequest signupRequest);
 }

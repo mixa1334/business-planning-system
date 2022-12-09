@@ -26,6 +26,9 @@ public class EmployeeProfile {
     @Property(name = "role")
     private EmployeeRole role;
 
+    @Property(name = "organization_id")
+    private Long organizationId;
+
     public enum EmployeeRole {
         EMPLOYEE("EMPLOYEE", "EMPLOYEE"),
         ANALYST("ANALYST", "EMPLOYEE", "ANALYST"),
@@ -74,6 +77,14 @@ public class EmployeeProfile {
 
     public void setRole(EmployeeRole role) {
         this.role = role;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 
     @Override

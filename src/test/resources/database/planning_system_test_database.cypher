@@ -3,6 +3,9 @@ CREATE
 (engineer:SPECIALITY {name: "engineer", description: "engineer"}),
 (marketer:SPECIALITY {name: "marketer", description: "marketer"}),
 
+//test org
+(food_shop:ORGANIZATION {name: "food shop", available_funds: "15000.00"}),
+
 //test business plan
 (new_product_specification:BUSINESS_PLAN_SPECIFICATION {risks: "no risks", opportunity: "new customers", necessary_funds: "9000.00", profit: "12000.00"}),
 
@@ -29,7 +32,7 @@ CREATE
 //1
 (alex_stats:EMPLOYEE_STATISTICS {completed_tasks: 3, completed_on_time: 2, completed_after_deadline: 1, efficiency: 66}),
 
-(alex_employee_profile:EMPLOYEE_PROFILE {role: "DIRECTOR"}),
+(alex_employee_profile:EMPLOYEE_PROFILE {role: "DIRECTOR", organization_id: ID(food_shop)}),
 (alex_employee_profile)-[:HAS_SPECIALITY]->(engineer),
 
 (alex:USER {name: "Alex", surname: "Alex", age: 29, phone_number: "+375 (29) 111-11-11",login: "alex", password: "$2a$12$KRuK7UBl2/C4XaolNTQ8sO/W5CgwPdgh//S4YVYqYbUDOJuk8T5zO"}),
@@ -39,7 +42,7 @@ CREATE
 //2
 (jhon_stats:EMPLOYEE_STATISTICS {completed_tasks: 1, completed_on_time: 1, completed_after_deadline: 0, efficiency: 100}),
 
-(jhon_employee_profile:EMPLOYEE_PROFILE {role: "EMPLOYEE"}),
+(jhon_employee_profile:EMPLOYEE_PROFILE {role: "EMPLOYEE", organization_id: ID(food_shop)}),
 (jhon_employee_profile)-[:HAS_SPECIALITY]->(engineer),
 (jhon_employee_profile)-[:HAS_TASKS]->(make_new_product_task),
 
@@ -50,7 +53,7 @@ CREATE
 //3
 (max_stats:EMPLOYEE_STATISTICS {completed_tasks: 0, completed_on_time: 0, completed_after_deadline: 0, efficiency: 0}),
 
-(max_employee_profile: EMPLOYEE_PROFILE {role: "ANALYST"}),
+(max_employee_profile: EMPLOYEE_PROFILE {role: "ANALYST", organization_id: ID(food_shop)}),
 (max_employee_profile)-[:HAS_SPECIALITY]->(marketer),
 (max_employee_profile)-[:HAS_TASKS]->(make_advertisement_task),
 
@@ -66,8 +69,7 @@ CREATE
 (ivan:USER {name: "Ivan", surname: "Ivan", age: 29, phone_number: "+375 (29) 111-11-11",login: "ivan", password: "$2a$12$KRuK7UBl2/C4XaolNTQ8sO/W5CgwPdgh//S4YVYqYbUDOJuk8T5zO"}),
 (ivan)-[:HAS_PROFILE_STATISTICS]->(ivan_stats),
 
-//test org
-(food_shop:ORGANIZATION {name: "food shop", available_funds: "15000.00"}),
+//fill organization
 
 (food_shop)-[:HAS_SPECIALITIES]->(engineer),
 (food_shop)-[:HAS_SPECIALITIES]->(marketer),

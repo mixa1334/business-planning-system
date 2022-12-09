@@ -3,7 +3,7 @@ package org.economics.planningsystem.dto.auth.response;
 import java.util.List;
 
 // from POST /auth/login and POST /auth/signup
-public class LoginResponse {
+public class UserDetailsResponse {
     private String token;
 
     private final String tokenType = "Bearer";

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -75,6 +76,7 @@ public class BasicTaskService implements TaskService {
 
             EmployeeProfile employeeProfile = organization.getEmployees().stream()
                     .filter(e -> e.getSpeciality().equals(task.getNecessarySpeciality()))
+                    .sorted(Comparator.comparing(e -> e.getTasks().size()))
                     .findAny()
                     .orElseThrow();
 
