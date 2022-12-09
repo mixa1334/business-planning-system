@@ -31,6 +31,9 @@ public class Task {
     @Property(name = "status")
     private TaskStatus taskStatus;
 
+    @Property(name = "business_plan_id")
+    private Long businessPlanId;
+
     public enum TaskStatus{
         IN_PROCESS,
         DONE
@@ -78,6 +81,14 @@ public class Task {
 
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public Long getBusinessPlanId() {
+        return businessPlanId;
+    }
+
+    public void setBusinessPlanId(Long businessPlanId) {
+        this.businessPlanId = businessPlanId;
     }
 
     @Override

@@ -3,16 +3,27 @@ CREATE
 (engineer:SPECIALITY {name: "engineer", description: "engineer"}),
 (marketer:SPECIALITY {name: "marketer", description: "marketer"}),
 
+//test business plan
+(new_product_specification:BUSINESS_PLAN_SPECIFICATION {risks: "no risks", opportunity: "new customers", necessary_funds: "9000.00", profit: "12000.00"}),
+
+(new_product_statistics:BUSINESS_PLAN_STATISTICS {all_tasks: 2, completed_tasks: 0, deadline: date("2022-12-12")}),
+
+(new_product_plan:BUSINESS_PLAN {title:"brand new product", status: "APPROVED"}),
+(new_product_plan)-[:HAS_PLAN_SPECIFICATION]->(new_product_specification),
+(new_product_plan)-[:HAS_PLAN_STATISTICS]->(new_product_statistics),
+
 
 //test tasks
 //1
-(make_new_product_task:TASK {title: "make new product", description: "make new product", deadline: date("2022-12-9"), status: "IN_PROCESS"}),
+(make_new_product_task:TASK {title: "make new product", description: "make new product", deadline: date("2022-12-9"), status: "IN_PROCESS", business_plan_id: ID(new_product_plan)}),
 (make_new_product_task)-[:NECESSARY_SPECIALITY]->(engineer),
 
 //2
-(make_advertisement_task:TASK {title: "make a product ad", description: "make a product ad", deadline: date("2022-12-12"), status: "IN_PROCESS"}),
+(make_advertisement_task:TASK {title: "make a product ad", description: "make a product ad", deadline: date("2022-12-12"), status: "IN_PROCESS", business_plan_id: ID(new_product_plan)}),
 (make_advertisement_task)-[:NECESSARY_SPECIALITY]->(marketer),
 
+(new_product_plan)-[:HAS_TASKS]->(make_new_product_task),
+(new_product_plan)-[:HAS_TASKS]->(make_advertisement_task),
 
 // test employees
 //1
@@ -47,17 +58,6 @@ CREATE
 (max)-[:HAS_PROFILE_STATISTICS]->(max_stats),
 (max)-[:HAS_PROFILE]->(max_employee_profile),
 
-
-//test business plan
-(new_product_specification:BUSINESS_PLAN_SPECIFICATION {risks: "no risks", opportunity: "new customers", necessary_funds: "9000.00", profit: "12000.00"}),
-
-(new_product_statistics:BUSINESS_PLAN_STATISTICS {all_tasks: 2, completed_tasks: 0, deadline: date("2022-12-12")}),
-
-(new_product_plan:BUSINESS_PLAN {title:"brand new product", status: "APPROVED"}),
-(new_product_plan)-[:HAS_PLAN_SPECIFICATION]->(new_product_specification),
-(new_product_plan)-[:HAS_PLAN_STATISTICS]->(new_product_statistics),
-(new_product_plan)-[:HAS_TASKS]->(make_new_product_task),
-(new_product_plan)-[:HAS_TASKS]->(make_advertisement_task),
 
 // test applications to membership
 //1

@@ -64,6 +64,7 @@ public class BasicTaskService implements TaskService {
     @Override
     public void create(Long orgId, Long planId, CreateNewTaskRequest request) {
         Task task = toTask(request);
+        task.setBusinessPlanId(planId);
         BusinessPlan businessPlan = businessPlanRepository.findById(planId).orElseThrow();
 
         if (businessPlan.getTasks().add(task)) {
