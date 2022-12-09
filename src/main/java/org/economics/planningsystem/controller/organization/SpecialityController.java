@@ -7,6 +7,7 @@ import org.economics.planningsystem.model.service.organization.SpecialityService
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class SpecialityController {
         this.service = service;
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
     @GetMapping
     public ResponseEntity<GetOrganizationSpecialitiesResponse> getAllSpecialitiesInOrganization(@PathVariable Long orgId) {
         GetOrganizationSpecialitiesResponse response = new GetOrganizationSpecialitiesResponse();
@@ -29,12 +31,14 @@ public class SpecialityController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#orgId)")
     @DeleteMapping("/{specialityId}")
     public ResponseEntity<HttpStatus> deleteSpeciality(@PathVariable Long orgId, @PathVariable Long specialityId) {
         service.deleteSpecialityById(specialityId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#orgId)")
     @PostMapping
     public ResponseEntity<HttpStatus> createNewSpecialityInOrganization(
             @PathVariable Long orgId,

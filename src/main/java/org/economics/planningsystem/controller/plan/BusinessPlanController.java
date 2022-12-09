@@ -8,6 +8,7 @@ import org.economics.planningsystem.model.service.plan.BusinessPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class BusinessPlanController {
         this.businessPlanService = businessPlanService;
     }
 
+    @PreAuthorize("hasAuthority('ANALYST') and isInOrganization(#orgId)")
     @PostMapping
     public ResponseEntity<CreateNewBusinessPlanResponse> createNewBusinessPlan(
             @PathVariable Long orgId,
@@ -35,6 +37,7 @@ public class BusinessPlanController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ANALYST') and isInOrganization(#orgId)")
     @GetMapping
     public ResponseEntity<GetOrganizationBusinessPlansResponse> getOrganizationBusinessPlans(@PathVariable Long orgId) {
         GetOrganizationBusinessPlansResponse response = new GetOrganizationBusinessPlansResponse();

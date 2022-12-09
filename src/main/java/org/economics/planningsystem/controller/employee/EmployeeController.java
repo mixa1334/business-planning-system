@@ -10,6 +10,7 @@ import org.economics.planningsystem.model.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#orgId)")
     @GetMapping
     public ResponseEntity<GetOrganizationEmployeeInfoResponse> getOrganizationEmployeeInfo(@PathVariable Long orgId) {
         GetOrganizationEmployeeInfoResponse response = new GetOrganizationEmployeeInfoResponse();
@@ -34,12 +36,14 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
     @DeleteMapping("/{empId}")
     public ResponseEntity<HttpStatus> leaveOrganization(@PathVariable Long orgId, @PathVariable Long empId) {
         employeeService.delete(orgId, empId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
     @GetMapping("/{empId}")
     public ResponseEntity<GetEmployeeInfoResponse> getEmployeeInfo(@PathVariable Long orgId, @PathVariable Long empId) {
         GetEmployeeInfoResponse response = new GetEmployeeInfoResponse();
@@ -49,6 +53,7 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
     @PutMapping("/{empId}")
     public ResponseEntity<HttpStatus> updateEmployeeInfo(
             @PathVariable Long orgId,
@@ -58,6 +63,7 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
     @GetMapping("/{empId}/tasks")
     public ResponseEntity<GetEmployeeTasksResponse> getEmployeeTasks(@PathVariable Long orgId, @PathVariable Long empId) {
         GetEmployeeTasksResponse response = new GetEmployeeTasksResponse();

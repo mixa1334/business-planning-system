@@ -4,6 +4,7 @@ import org.economics.planningsystem.dto.auth.request.GetUserDetailsRequest;
 import org.economics.planningsystem.dto.auth.request.LoginRequest;
 import org.economics.planningsystem.dto.auth.response.LoginResponse;
 import org.economics.planningsystem.dto.auth.request.SignupRequest;
+import org.economics.planningsystem.dto.auth.response.SignupResponse;
 import org.economics.planningsystem.model.entity.employee.User;
 import org.economics.planningsystem.model.repository.employee.EmployeeProfileRepository;
 import org.economics.planningsystem.model.service.employee.UserService;
@@ -62,9 +63,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<HttpStatus> signup(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<SignupResponse> signup(@RequestBody SignupRequest signupRequest) {
         userService.create(signupRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        SignupResponse signupResponse = new SignupResponse();
+        signupResponse.setMessage("success!");
+        return ResponseEntity.ok(signupResponse);
     }
 
     @PostMapping("/user_info")

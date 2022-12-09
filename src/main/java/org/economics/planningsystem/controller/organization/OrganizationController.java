@@ -15,6 +15,7 @@ import org.economics.planningsystem.model.service.organization.impl.BasicOrganiz
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -34,7 +35,7 @@ public class OrganizationController {
     }
 
     @GetMapping
-    public ResponseEntity<GetOrganizationsResponse> getAllOrganizations(){
+    public ResponseEntity<GetOrganizationsResponse> getAllOrganizations() {
         GetOrganizationsResponse response = new GetOrganizationsResponse();
         response.setOrganizations(service.getAll());
         return ResponseEntity.ok(response);
@@ -64,6 +65,7 @@ public class OrganizationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#id)")
     @GetMapping("/{id}")
     public ResponseEntity<GetOrganizationInfoResponse> getOrganizationInfo(@PathVariable Long id) {
         GetOrganizationInfoResponse organizationInfoResponse = new GetOrganizationInfoResponse();
@@ -72,6 +74,7 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationInfoResponse);
     }
 
+    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateOrganizationInfo(@PathVariable Long id, @RequestBody ChangeOrganizationInfoRequest changeOrganizationInfoRequest) {
         Organization organization = service.updateById(id, changeOrganizationInfoRequest);
@@ -91,6 +94,7 @@ public class OrganizationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#id)")
     @GetMapping("/{id}/applications")
     public ResponseEntity<GetApplicationsForMembershipResponse> getApplicationsForMembership(@PathVariable Long id) {
         Organization organization = service.findOrganizationById(id);
@@ -100,6 +104,7 @@ public class OrganizationController {
         return ResponseEntity.ok(applications);
     }
 
+    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#orgId)")
     @PostMapping("/{orgId}/applications/{userId}/accept")
     public ResponseEntity<HttpStatus> acceptNewEmployee(@PathVariable Long orgId, @PathVariable Long userId) {
         Organization organization = service.findOrganizationById(orgId);
@@ -118,6 +123,7 @@ public class OrganizationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#orgId)")
     @PostMapping("/{orgId}/applications/{userId}/reject_user")
     public ResponseEntity<HttpStatus> rejectNewEmployee(@PathVariable Long orgId, @PathVariable Long userId) {
         Organization organization = service.findOrganizationById(orgId);
@@ -129,6 +135,7 @@ public class OrganizationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#id)")
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteOrganization(@PathVariable Long id) {
         service.deleteOrganizationById(id);

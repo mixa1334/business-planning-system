@@ -5,6 +5,7 @@ import org.economics.planningsystem.model.service.plan.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -19,6 +20,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
     @PutMapping("/{taskId}")
     public ResponseEntity<HttpStatus> completeTask(
             @PathVariable Long orgId,
@@ -29,6 +31,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ANALYST') and isInOrganization(#orgId)")
     @PostMapping
     public ResponseEntity<HttpStatus> createNewTask(
             @PathVariable Long orgId,

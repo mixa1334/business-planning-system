@@ -35,8 +35,6 @@ public class SecurityConfig {
     private String authorizationHeaderName;
     @Value("${bps.security.password_encoder_strength}")
     private Integer passwordEncoderStrength;
-    @Value("${bps.security.authentication_controller_path}")
-    private String authenticationControllerPath;
 
     @Autowired
     public SecurityConfig(JwtProvider jwtProvider, UserRepository userRepository) {
@@ -49,8 +47,8 @@ public class SecurityConfig {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                // TODO: 12/1/2022 path to auth controller
-                .antMatchers("/**").permitAll()
+                .antMatchers("/auth/login").permitAll()
+                .antMatchers("/auth/signup").permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling()
                 .accessDeniedHandler(bpsAccessDeniedHandler())
