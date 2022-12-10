@@ -49,7 +49,7 @@ public class EmployeeController {
         GetEmployeeInfoResponse response = new GetEmployeeInfoResponse();
         EmployeeProfile employee = employeeService.findById(orgId, empId);
         response.setSpeciality(employee.getSpeciality());
-        response.setRole(employee.getRole().name());
+        response.setRole(employee.getRole().getPermission());
         return ResponseEntity.ok(response);
     }
 

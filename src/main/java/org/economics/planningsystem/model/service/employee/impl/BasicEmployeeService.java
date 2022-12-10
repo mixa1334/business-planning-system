@@ -76,11 +76,11 @@ public class BasicEmployeeService implements EmployeeService {
     public void update(Long orgId, Long empId, ChangeEmployeeInfoRequest request) {
         EmployeeProfile employeeProfile = employeeProfileRepository.findById(empId).orElseThrow();
 
-        var role = EmployeeProfile.EmployeeRole.valueOf(request.getRole());
+//        var role = EmployeeProfile.EmployeeRole.valueOf(request.getRole());
         var speciality = specialityRepository.findById(request.getSpecialityId().longValue()).orElseThrow();
 
         employeeProfile.setSpeciality(speciality);
-        employeeProfile.setRole(role);
+//        employeeProfile.setRole(role);
 
         employeeProfileRepository.save(employeeProfile);
     }
