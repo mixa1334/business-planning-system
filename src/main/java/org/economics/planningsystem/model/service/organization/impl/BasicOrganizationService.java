@@ -77,7 +77,7 @@ public class BasicOrganizationService implements OrganizationService {
 
     @Override
     public User findUserById(Long id) {
-        return userRepository.findUserById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow();
     }
 
 

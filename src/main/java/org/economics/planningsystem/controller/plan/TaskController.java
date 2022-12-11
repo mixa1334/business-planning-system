@@ -2,10 +2,13 @@ package org.economics.planningsystem.controller.plan;
 
 import org.economics.planningsystem.dto.plan.request.CreateNewTaskRequest;
 import org.economics.planningsystem.model.service.plan.TaskService;
+import org.economics.planningsystem.security.user.BpsUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,7 +30,9 @@ public class TaskController {
             @PathVariable Long planId,
             @PathVariable Long taskId
     ) {
-        taskService.complete(orgId, planId, taskId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        BpsUserDetails userDetails = (BpsUserDetails) authentication.getPrincipal();
+        taskService.complete(orgId, planId, taskId, userDetails.getProfileId(), userDetails.getUserId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

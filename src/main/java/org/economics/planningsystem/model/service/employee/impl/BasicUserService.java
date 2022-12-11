@@ -29,12 +29,12 @@ public class BasicUserService implements UserService {
 
     @Override
     public User getUserInfo(Long userId) {
-        return userRepository.findUserById(userId).orElseThrow();
+        return userRepository.findById(userId).orElseThrow();
     }
 
     @Override
     public void update(Long userId, ChangeUserInfoRequest request) {
-        User user = userRepository.findUserById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
         user.setName(request.getName());
         user.setSurname(request.getSurname());
         user.setAge(request.getAge());
@@ -48,7 +48,7 @@ public class BasicUserService implements UserService {
         if (userRepository.existsByLogin(newLogin)) {
             throw new IllegalArgumentException("user already exists");
         }
-        User user = userRepository.findUserById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
         user.setLogin(newLogin);
         userRepository.save(user);
         String token = jwtProvider.generateToken(newLogin);
@@ -59,7 +59,7 @@ public class BasicUserService implements UserService {
 
     @Override
     public void updatePassword(Long userId, ChangePasswordRequest request) {
-        User user = userRepository.findUserById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
         String rawPassword = request.getNewPassword();
         String newPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(newPassword);

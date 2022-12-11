@@ -76,7 +76,7 @@ public class BasicAuthenticationService implements AuthenticationService {
 
     @Override
     public UserDetailsResponse getDetailsAboutUser(Long userId) {
-        User user =  userRepository.findUserById(userId).orElseThrow();
+        User user =  userRepository.findById(userId).orElseThrow();
         BpsUserDetails userDetails = (BpsUserDetails) BpsUserDetails.build(user);
         return createUserDetailResponse(userDetails);
     }

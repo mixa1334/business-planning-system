@@ -2,22 +2,27 @@ package org.economics.planningsystem.model.service.plan.impl;
 
 import org.economics.planningsystem.dto.plan.request.CreateNewTaskRequest;
 import org.economics.planningsystem.model.entity.employee.EmployeeProfile;
+import org.economics.planningsystem.model.entity.employee.EmployeeStatistics;
+import org.economics.planningsystem.model.entity.employee.User;
 import org.economics.planningsystem.model.entity.organization.Organization;
 import org.economics.planningsystem.model.entity.organization.Speciality;
 import org.economics.planningsystem.model.entity.plan.BusinessPlan;
 import org.economics.planningsystem.model.entity.plan.BusinessPlanStatistics;
 import org.economics.planningsystem.model.entity.plan.Task;
 import org.economics.planningsystem.model.repository.employee.EmployeeProfileRepository;
+import org.economics.planningsystem.model.repository.employee.UserRepository;
 import org.economics.planningsystem.model.repository.organization.OrganizationRepository;
 import org.economics.planningsystem.model.repository.organization.SpecialityRepository;
 import org.economics.planningsystem.model.repository.plan.BusinessPlanRepository;
 import org.economics.planningsystem.model.repository.plan.TaskRepository;
 import org.economics.planningsystem.model.service.plan.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -31,24 +36,42 @@ public class BasicTaskService implements TaskService {
     private final SpecialityRepository specialityRepository;
     private final EmployeeProfileRepository employeeProfileRepository;
     private final OrganizationRepository organizationRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public BasicTaskService(TaskRepository taskRepository,
                             BusinessPlanRepository businessPlanRepository,
                             SpecialityRepository specialityRepository,
                             EmployeeProfileRepository employeeProfileRepository,
-                            OrganizationRepository organizationRepository) {
+                            OrganizationRepository organizationRepository,
+                            UserRepository userRepository) {
         this.taskRepository = taskRepository;
         this.businessPlanRepository = businessPlanRepository;
         this.specialityRepository = specialityRepository;
         this.employeeProfileRepository = employeeProfileRepository;
         this.organizationRepository = organizationRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public void complete(Long orgId, Long planId, Long taskId) {
+    public void complete(Long orgId, Long planId, Long taskId, Long empId, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        EmployeeProfile employeeProfile = employeeProfileRepository.findById(empId).orElseThrow();
         Task task = taskRepository.findById(taskId).orElseThrow();
+        employeeProfile.getTasks().remove(task);
         task.setTaskStatus(Task.TaskStatus.DONE);
+
+        EmployeeStatistics userStat = user.getStatistics();
+        userStat.setCompletedTasks(userStat.getCompletedTasks() + 1);
+        LocalDate now = LocalDate.now();
+        LocalDate deadline = task.getDeadline();
+        if(deadline.compareTo(now) > 0){
+            userStat.setCompletedOnTime(userStat.getCompletedOnTime() + 1);
+        }else {
+            userStat.setCompletedAfterDeadline(userStat.getCompletedAfterDeadline() + 1);
+        }
+        Long efficiency = userStat.getCompletedOnTime() * 100 / userStat.getCompletedTasks();
+        userStat.setEfficiency(efficiency);
 
         BusinessPlan plan = businessPlanRepository.findById(planId).orElseThrow();
         BusinessPlanStatistics statistics = plan.getBusinessPlanStatistics();
@@ -59,8 +82,9 @@ public class BasicTaskService implements TaskService {
         }
 
         businessPlanRepository.save(plan);
+        userRepository.save(user);
         taskRepository.save(task);
-        taskRepository.deleteTaskFromEmployee(taskId);
+        employeeProfileRepository.save(employeeProfile);
     }
 
     @Override
