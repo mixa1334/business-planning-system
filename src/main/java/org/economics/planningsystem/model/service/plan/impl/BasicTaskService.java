@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -78,7 +79,11 @@ public class BasicTaskService implements TaskService {
                     .filter(e -> e.getSpeciality().equals(task.getNecessarySpeciality()))
                     .sorted(Comparator.comparing(e -> e.getTasks().size()))
                     .findAny()
-                    .orElseThrow();
+                    .orElseGet(()->
+                        organization.getEmployees().stream()
+                                .min(Comparator.comparing(e -> e.getTasks().size()))
+                                .orElseThrow()
+                    );
 
             employeeProfile.getTasks().add(task);
 
