@@ -25,7 +25,7 @@ public class BusinessPlanController {
         this.businessPlanService = businessPlanService;
     }
 
-    @PreAuthorize("hasAuthority('ANALYST') and isInOrganization(#orgId)")
+    @PreAuthorize("hasAuthority('ANALYST') and isAMemberOfOrganization(#orgId)")
     @PostMapping
     public ResponseEntity<CreateNewBusinessPlanResponse> createNewBusinessPlan(
             @PathVariable Long orgId,
@@ -37,7 +37,7 @@ public class BusinessPlanController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority('ANALYST') and isInOrganization(#orgId)")
+    @PreAuthorize("hasAuthority('ANALYST') and isAMemberOfOrganization(#orgId)")
     @GetMapping
     public ResponseEntity<GetOrganizationBusinessPlansResponse> getOrganizationBusinessPlans(@PathVariable Long orgId) {
         GetOrganizationBusinessPlansResponse response = new GetOrganizationBusinessPlansResponse();

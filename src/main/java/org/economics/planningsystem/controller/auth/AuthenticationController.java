@@ -1,11 +1,10 @@
 package org.economics.planningsystem.controller.auth;
 
-import org.economics.planningsystem.dto.auth.request.GetUserDetailsRequest;
 import org.economics.planningsystem.dto.auth.request.LoginRequest;
 import org.economics.planningsystem.dto.auth.response.UserDetailsResponse;
 import org.economics.planningsystem.dto.auth.request.SignupRequest;
 import org.economics.planningsystem.dto.auth.response.SignupResponse;
-import org.economics.planningsystem.model.service.auth.AuthenticationService;
+import org.economics.planningsystem.model.service.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-    private final AuthenticationService authenticationService;
+    private final AuthService authenticationService;
 
     @Autowired
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(AuthService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
@@ -34,9 +33,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/user_details")
-    public ResponseEntity<UserDetailsResponse> getUserDetails(@RequestBody GetUserDetailsRequest userDetailsRequest) {
-        Long userId = userDetailsRequest.getUserId();
-        UserDetailsResponse response = authenticationService.getDetailsAboutUser(userId);
+    public ResponseEntity<UserDetailsResponse> getUserDetails() {
+        UserDetailsResponse response = authenticationService.getDetailsAboutUser();
         return ResponseEntity.ok(response);
     }
 }

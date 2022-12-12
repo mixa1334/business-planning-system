@@ -10,6 +10,7 @@ import org.economics.planningsystem.model.service.employee.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasUserId(#id) or hasAuthority('DIRECTOR')")
     @GetMapping("/{id}")
     public ResponseEntity<GetUserInfoResponse> getUserInfo(@PathVariable Long id) {
         User user = userService.getUserInfo(id);
@@ -32,18 +34,21 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasUserId(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateUserInfo(@PathVariable Long id, @Valid @RequestBody ChangeUserInfoRequest changeUserInfoRequest) {
         userService.update(id, changeUserInfoRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasUserId(#id)")
     @PutMapping("/{id}/login")
     public ResponseEntity<ChangeLoginResponse> updateUserLogin(@PathVariable Long id, @Valid @RequestBody ChangeLoginRequest changeLoginRequest) {
         ChangeLoginResponse response = userService.updateLogin(id, changeLoginRequest);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasUserId(#id)")
     @PutMapping("/{id}/password")
     public ResponseEntity<HttpStatus> updateUserPassword(@PathVariable Long id, @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
         userService.updatePassword(id, changePasswordRequest);

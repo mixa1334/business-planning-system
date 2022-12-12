@@ -22,7 +22,7 @@ public class SpecialityController {
         this.service = service;
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
+    @PreAuthorize("isAMemberOfOrganization(#orgId)")
     @GetMapping
     public ResponseEntity<GetOrganizationSpecialitiesResponse> getAllSpecialitiesInOrganization(@PathVariable Long orgId) {
         GetOrganizationSpecialitiesResponse response = new GetOrganizationSpecialitiesResponse();
@@ -31,14 +31,14 @@ public class SpecialityController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#orgId)")
+    @PreAuthorize("hasAuthority('DIRECTOR') and isAMemberOfOrganization(#orgId)")
     @DeleteMapping("/{specialityId}")
     public ResponseEntity<HttpStatus> deleteSpeciality(@PathVariable Long orgId, @PathVariable Long specialityId) {
         service.deleteSpecialityById(specialityId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#orgId)")
+    @PreAuthorize("hasAuthority('DIRECTOR') and isAMemberOfOrganization(#orgId)")
     @PostMapping
     public ResponseEntity<HttpStatus> createNewSpecialityInOrganization(
             @PathVariable Long orgId,

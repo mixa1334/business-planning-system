@@ -27,7 +27,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PreAuthorize("hasAuthority('DIRECTOR') and isInOrganization(#orgId)")
+    @PreAuthorize("hasAuthority('DIRECTOR') and isAMemberOfOrganization(#orgId)")
     @GetMapping
     public ResponseEntity<GetOrganizationEmployeeInfoResponse> getOrganizationEmployeeInfo(@PathVariable Long orgId) {
         GetOrganizationEmployeeInfoResponse response = new GetOrganizationEmployeeInfoResponse();
@@ -36,14 +36,26 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
+    @PreAuthorize(
+            "isAMemberOfOrganization(#orgId) and (" +
+                    "hasEmployeeProfile(#empId)" +
+                    " or "+
+                    "hasAuthority('DIRECTOR')" +
+                    ")"
+    )
     @DeleteMapping("/{empId}")
     public ResponseEntity<HttpStatus> leaveOrganization(@PathVariable Long orgId, @PathVariable Long empId) {
         employeeService.delete(orgId, empId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
+    @PreAuthorize(
+            "isAMemberOfOrganization(#orgId) and (" +
+                    "hasEmployeeProfile(#empId)" +
+                    " or "+
+                    "hasAuthority('DIRECTOR')" +
+                    ")"
+    )
     @GetMapping("/{empId}")
     public ResponseEntity<GetEmployeeInfoResponse> getEmployeeInfo(@PathVariable Long orgId, @PathVariable Long empId) {
         GetEmployeeInfoResponse response = new GetEmployeeInfoResponse();
@@ -53,7 +65,7 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
+    @PreAuthorize("isAMemberOfOrganization(#orgId) and hasEmployeeProfile(#empId)")
     @PutMapping("/{empId}")
     public ResponseEntity<HttpStatus> updateEmployeeInfo(
             @PathVariable Long orgId,
@@ -63,7 +75,13 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
+    @PreAuthorize(
+            "isAMemberOfOrganization(#orgId) and (" +
+                    "hasEmployeeProfile(#empId)" +
+                    " or "+
+                    "hasAuthority('DIRECTOR')" +
+                    ")"
+    )
     @GetMapping("/{empId}/tasks")
     public ResponseEntity<GetEmployeeTasksResponse> getEmployeeTasks(@PathVariable Long orgId, @PathVariable Long empId) {
         GetEmployeeTasksResponse response = new GetEmployeeTasksResponse();

@@ -34,13 +34,8 @@ public class BasicOrganizationService implements OrganizationService {
     }
 
     @Override
-    public Long findOrganizationIdByProfileId(Long profileId) {
-        return organizationRepository.findOrganizationIdByProfileId(profileId);
-    }
-
-    @Override
     public Organization findOrganizationById(Long id) {
-        return organizationRepository.findOrganizationById(id);
+        return organizationRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -60,7 +55,7 @@ public class BasicOrganizationService implements OrganizationService {
 
     @Override
     public Organization updateById(Long id, ChangeOrganizationInfoRequest organizationInfoRequest) {
-        Organization organization = organizationRepository.findOrganizationById(id);
+        Organization organization = organizationRepository.findById(id).orElseThrow();
         if (organization == null){
             return null;
         }

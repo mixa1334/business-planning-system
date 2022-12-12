@@ -11,16 +11,17 @@ import java.util.List;
 public interface OrganizationService {
     List<Organization> getAll();
 
-    Long findOrganizationIdByProfileId(Long profileId);
-
     Organization findOrganizationById(Long id);
+
     void save(Organization organization);
+
     void save(User user);
+
     void save(EmployeeProfile employeeProfile);
 
     Organization updateById(Long id, ChangeOrganizationInfoRequest organizationInfoRequest);
+
     void deleteOrganizationById(Long id);
+
     User findUserById(Long id);
-
-
 }

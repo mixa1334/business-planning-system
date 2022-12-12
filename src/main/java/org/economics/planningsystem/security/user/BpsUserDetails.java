@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class BpsUserDetails implements UserDetails {
     private final Long userId;
@@ -20,9 +19,15 @@ public class BpsUserDetails implements UserDetails {
     private final Long organizationId;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public BpsUserDetails(Long userId, Long statisticsId, String login, String password
-            , Long profileId, Long organizationId
-            , Collection<? extends GrantedAuthority> authorities) {
+    public BpsUserDetails(
+            Long userId,
+            Long statisticsId,
+            String login,
+            String password,
+            Long profileId,
+            Long organizationId,
+            Collection<? extends GrantedAuthority> authorities
+    ) {
         this.userId = userId;
         this.statisticsId = statisticsId;
         this.login = login;
@@ -67,7 +72,7 @@ public class BpsUserDetails implements UserDetails {
         return true;
     }
 
-    public List<String> getRoles(){
+    public List<String> getRoles() {
         return authorities.stream().map(GrantedAuthority::getAuthority).toList();
     }
 
@@ -94,11 +99,15 @@ public class BpsUserDetails implements UserDetails {
     public static UserDetails build(User user) {
         Long statisticsId = user.getStatistics().getId();
         EmployeeProfile profile = user.getProfile();
-        Long profileId = profile != null ? profile.getId() : null;
-        Long organizationId = profile != null ? profile.getOrganizationId() : null;
-        List<? extends GrantedAuthority> authorities = new ArrayList<>();
+        Long profileId = null;
+        Long organizationId = null;
+        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
         if (profile != null) {
-            authorities = profile.getRole().getAuthorities()
+            profileId = profile.getId();
+            organizationId = profile.getOrganizationId();
+            authorities = profile
+                    .getRole()
+                    .getAuthorities()
                     .stream()
                     .map(SimpleGrantedAuthority::new)
                     .toList();

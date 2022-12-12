@@ -23,7 +23,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYEE') and isInOrganization(#orgId)")
+    @PreAuthorize("isTaskOwner(#taskId)")
     @PutMapping("/{taskId}")
     public ResponseEntity<HttpStatus> completeTask(
             @PathVariable Long orgId,
@@ -36,7 +36,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ANALYST') and isInOrganization(#orgId)")
+    @PreAuthorize("hasAuthority('ANALYST') and isAMemberOfOrganization(#orgId)")
     @PostMapping
     public ResponseEntity<HttpStatus> createNewTask(
             @PathVariable Long orgId,
